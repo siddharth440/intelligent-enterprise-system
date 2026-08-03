@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Expertise Prediction Result - Intelligent Expertise System{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+        <span class="badge badge-primary" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; margin-bottom: 0.75rem;">
+            <i class="bi bi-cpu-fill"></i> Machine Learning Classifier Output
+        </span>
+        <h1 style="font-size: 2.6rem; font-weight: 800; margin-bottom: 0.5rem;">Your Predicted Expertise Domain</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem;">Analyzed using Random Forest Machine Learning Model</p>
+    </div>
+
+    <!-- Prediction Outcome Card -->
+    <div class="glass-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%); border: 2px solid var(--accent-blue); margin-bottom: 2rem; padding: 2.5rem; text-align: center;">
+        <div style="font-size: 4rem; color: var(--accent-blue); margin-bottom: 1rem;"><i class="bi bi-award-fill"></i></div>
+        <h2 style="font-size: 2.8rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.5rem;">
+            {{ prediction.predicted_expertise }}
+        </h2>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-success" style="font-size: 1.1rem; padding: 0.5rem 1.2rem;">
+                <i class="bi bi-shield-check"></i> {{ prediction.confidence_score }}% Confidence Score
+            </span>
+            <span class="badge badge-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                Model: {{ prediction.algorithm_used }}
+            </span>
+        </div>
+        <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto;">
+            Based on your technical skills, programming languages, experience, and projects, our machine learning pipeline has classified your expertise profile with high statistical probability.
+        </p>
+    </div>
+
+    <!-- Top Domain Probability Breakdown -->
+    {% if top_domains %}
+    <div class="glass-card" style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1.2rem;"><i class="bi bi-bar-chart-fill" style="color: var(--accent-purple);"></i> Top Match Probabilities Breakdown</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for item in top_domains %}
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; font-size: 0.95rem;">
+                        <strong>{{ item.domain }}</strong>
+                        <span style="color: var(--accent-blue); font-weight: 700;">{{ item.probability }}%</span>
+                    </div>
+                    <div style="width: 100%; height: 10px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="width: {{ item.probability }}%; height: 100%; background: var(--grad-primary); border-radius: var(--radius-full);"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Strengths vs Weaknesses Grid -->
+    <div class="grid-2" style="margin-bottom: 2rem;">
+        <div class="glass-card" style="border-top: 4px solid #10B981;">
+            <h3 style="color: #34D399; margin-bottom: 1rem;">
+                <i class="bi bi-check-circle-fill"></i> Identified Strengths
+            </h3>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+                {{ prediction.strengths }}
+            </p>
+        </div>
+
+        <div class="glass-card" style="border-top: 4px solid #EF4444;">
+            <h3 style="color: #F87171; margin-bottom: 1rem;">
+                <i class="bi bi-exclamation-triangle-fill"></i> Skill Gap Weaknesses
+            </h3>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+                {{ prediction.weaknesses }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ url_for('ai.recommendations') }}" class="btn btn-lg btn-primary">
+            <i class="bi bi-compass-fill"></i> View Custom Recommendations Roadmap
+        </a>
+        <a href="{{ url_for('report.download_report', report_type='expertise') }}" class="btn btn-lg btn-secondary">
+            <i class="bi bi-file-pdf-fill"></i> Download Official PDF Report
+        </a>
+    </div>
+</div>
+{% endblock %}

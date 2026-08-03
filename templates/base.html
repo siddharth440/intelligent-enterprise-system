@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Intelligent Expertise System{% endblock %} - AI Platform</title>
+    <meta name="description" content="AI-powered Intelligent Expertise System analyzing skills, profiles, and career growth recommendations.">
+    
+    <!-- Google Fonts & Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Background Glow Animations -->
+    <div class="bg-glow-orb glow-1"></div>
+    <div class="bg-glow-orb glow-2"></div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="{{ url_for('main.index') }}" class="navbar-brand">
+            <i class="bi bi-cpu-fill"></i> Expertise AI
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="{{ url_for('main.index') }}" class="nav-link">Home</a></li>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin() %}
+                    <li><a href="{{ url_for('admin.dashboard') }}" class="nav-link"><i class="bi bi-speedometer2"></i> Admin Panel</a></li>
+                    <li><a href="{{ url_for('admin.user_management') }}" class="nav-link">Users</a></li>
+                    <li><a href="{{ url_for('admin.retrain_model') }}" class="nav-link">Retrain ML</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('user.dashboard') }}" class="nav-link"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('user.profile') }}" class="nav-link">Profile</a></li>
+                    <li><a href="{{ url_for('ai.recommendations') }}" class="nav-link">Recommendations</a></li>
+                    <li><a href="{{ url_for('user.resume_analyzer') }}" class="nav-link">Resume Analyzer</a></li>
+                    <li><a href="{{ url_for('user.chatbot') }}" class="nav-link"><i class="bi bi-robot"></i> AI Assistant</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('analytics.dashboard') }}" class="nav-link">Analytics</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('main.about') }}" class="nav-link">About</a></li>
+                <li><a href="{{ url_for('main.contact') }}" class="nav-link">Contact</a></li>
+                <li><a href="{{ url_for('auth.login') }}" class="nav-link">Login</a></li>
+                <li><a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-primary">Get Started</a></li>
+            {% endif %}
+            <li>
+                <button id="theme-toggle-btn" class="btn btn-sm btn-secondary" title="Toggle Light/Dark Theme">
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Container & Flash Notifications -->
+    <div class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span><i class="bi bi-info-circle-fill"></i> {{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Intelligent Expertise System. Engineered with Python, Flask, SQLAlchemy, Scikit-learn & Chart.js.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

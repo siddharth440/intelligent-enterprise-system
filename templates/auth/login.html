@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In - Intelligent Expertise System{% endblock %}
+
+{% block content %}
+<div style="max-width: 450px; margin: 3rem auto;">
+    <div class="glass-card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--grad-primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.8rem; color: #FFF;">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h2>Sign In to Your Account</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Access AI Expertise Predictions & Recommendations</p>
+        </div>
+
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="user@domain.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="bi bi-key-fill"></i> Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.85rem;">
+                <a href="{{ url_for('auth.forgot_password') }}">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem;">
+                <i class="bi bi-box-arrow-in-right"></i> Sign In
+            </button>
+        </form>
+
+        <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-secondary);">
+            Don't have an account? <a href="{{ url_for('auth.register') }}">Create One Now</a>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+            <strong>Demo Credentials:</strong><br>
+            Admin: <code>admin@expertise.ai</code> / <code>Admin@123</code>
+        </div>
+    </div>
+</div>
+{% endblock %}

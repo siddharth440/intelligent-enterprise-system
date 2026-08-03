@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Career Recommendations - Intelligent Expertise System{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 style="font-size: 2rem;"><i class="bi bi-compass-fill" style="color: var(--accent-purple);"></i> Personalized Recommendation Roadmap</h1>
+        <p style="color: var(--text-secondary);">Tailored career growth opportunities matching your predicted expertise: <strong>{{ prediction.predicted_expertise if prediction else 'All Domains' }}</strong></p>
+    </div>
+    <div>
+        <a href="{{ url_for('report.download_report', report_type='recommendation') }}" class="btn btn-primary">
+            <i class="bi bi-file-pdf-fill"></i> Download PDF Roadmap
+        </a>
+    </div>
+</div>
+
+{% if recommendations %}
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    {% for rec in recommendations %}
+        <div class="glass-card" style="display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
+                    <span class="badge 
+                        {% if rec.category == 'Course' %}badge-primary
+                        {% elif rec.category == 'Certification' %}badge-success
+                        {% elif rec.category == 'Project' %}badge-warning
+                        {% elif rec.category == 'Job' or rec.category == 'Internship' %}badge-danger
+                        {% else %}badge-primary{% endif %}">
+                        {{ rec.category }}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Urgency: {{ rec.urgency }}</span>
+                </div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.4rem; color: var(--text-primary);">{{ rec.title }}</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">{{ rec.description }}</p>
+            </div>
+
+            <div>
+                {% if rec.link and rec.link != '#' %}
+                    <a href="{{ rec.link }}" target="_blank" class="btn btn-sm btn-outline">
+                        Explore Resource <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                {% else %}
+                    <span class="btn btn-sm btn-secondary" style="cursor: default;">
+                        Internal Action Item
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="glass-card" style="text-align: center; padding: 3rem 1rem;">
+    <i class="bi bi-compass" style="font-size: 3.5rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+    <h3>No Recommendations Generated Yet</h3>
+    <p style="color: var(--text-secondary); margin: 0.5rem 0 1.5rem;">Run your AI Expertise Prediction to unlock personalized course, certification, and job recommendations.</p>
+    <a href="{{ url_for('ai.predict') }}" class="btn btn-primary btn-lg">Generate AI Prediction</a>
+</div>
+{% endif %}
+{% endblock %}

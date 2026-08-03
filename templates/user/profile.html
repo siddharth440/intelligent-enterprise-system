@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Intelligent Expertise System{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto;">
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem;"><i class="bi bi-person-lines-fill" style="color: var(--accent-blue);"></i> User Profile & Skill Matrix</h1>
+        <p style="color: var(--text-secondary);">Update your background, education, skills, and programming languages to train the AI predictor.</p>
+    </div>
+
+    <div class="glass-card">
+        <form action="{{ url_for('user.profile') }}" method="POST">
+            <h3 style="margin-bottom: 1.2rem; color: var(--accent-blue);"><i class="bi bi-person-badge"></i> Personal & Academic Details</h3>
+            
+            <div class="grid-3">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" name="phone" class="form-control" value="{{ profile.phone if profile and profile.phone else '' }}" placeholder="+1 555-0199">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="number" name="age" class="form-control" value="{{ profile.age if profile and profile.age else '' }}" placeholder="22">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select name="gender" class="form-control">
+                        <option value="Male" {% if profile and profile.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if profile and profile.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if profile and profile.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="form-group">
+                    <label class="form-label">Highest Education Degree</label>
+                    <input type="text" name="education" class="form-control" value="{{ profile.education if profile and profile.education else '' }}" placeholder="B.Tech Computer Science">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">College / University Name</label>
+                    <input type="text" name="college" class="form-control" value="{{ profile.college if profile and profile.college else '' }}" placeholder="Stanford University / IIT">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department / Branch</label>
+                    <input type="text" name="department" class="form-control" value="{{ profile.department if profile and profile.department else '' }}" placeholder="Computer Science & Engineering">
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
+            <h3 style="margin-bottom: 1.2rem; color: var(--accent-purple);"><i class="bi bi-tools"></i> Technical Competencies & Experience</h3>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Years of Professional/Academic Experience</label>
+                    <input type="number" name="experience_years" class="form-control" value="{{ profile.experience_years if profile else 0 }}" min="0" max="40">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Completed Projects Count</label>
+                    <input type="number" name="projects_count" class="form-control" value="{{ profile.projects_count if profile else 0 }}" min="0" max="100">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Programming Languages (Comma-separated)</label>
+                <input type="text" name="programming_languages" class="form-control" value="{{ profile.programming_languages if profile and profile.programming_languages else '' }}" placeholder="Python, JavaScript, C++, SQL, Java">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Technical Skills Matrix (Comma-separated)</label>
+                <textarea name="skills_input" class="form-control" placeholder="PyTorch, TensorFlow, React.js, Docker, Kubernetes, Ethical Hacking, AWS, Figma, MySQL">{{ skills_str }}</textarea>
+                <small style="color: var(--text-muted); font-size: 0.8rem;">List your specific technical frameworks, tools, and platforms separated by commas.</small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Domain Interests & Career Goals</label>
+                <textarea name="interests" class="form-control" placeholder="Computer Vision, Autonomous AI Agents, Microservices, Penetration Testing...">{{ profile.interests if profile and profile.interests else '' }}</textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-floppy-fill"></i> Save Profile & Update Skills
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

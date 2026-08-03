@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard - Intelligent Expertise System{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 style="font-size: 2rem; margin-bottom: 0.2rem;">Welcome back, {{ current_user.full_name }}! 👋</h1>
+        <p style="color: var(--text-secondary);">Here is your AI Expertise overview and personalized career roadmap.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('ai.predict') }}" class="btn btn-primary btn-lg">
+            <i class="bi bi-cpu-fill"></i> Run AI Expertise Prediction
+        </a>
+    </div>
+</div>
+
+<!-- Quick Stats Row -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+    <div class="glass-card">
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">PREDICTED DOMAIN</div>
+        <div style="font-size: 1.3rem; font-weight: 700; color: var(--accent-blue);">
+            {{ prediction.predicted_expertise if prediction else 'Not Analyzed Yet' }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            {% if prediction %}
+                <span class="badge badge-success"><i class="bi bi-check-circle-fill"></i> {{ prediction.confidence_score }}% Match</span>
+            {% else %}
+                <span class="badge badge-warning">Action Required</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">SKILLS LOGGED</div>
+        <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-purple);">
+            {{ skills|length }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            <a href="{{ url_for('user.profile') }}">Manage Skills →</a>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">RECOMMENDATIONS</div>
+        <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-emerald);">
+            {{ recommendations|length }}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            <a href="{{ url_for('ai.recommendations') }}">View Roadmap →</a>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.3rem;">RESUME STATUS</div>
+        <div style="font-size: 1.3rem; font-weight: 700; color: var(--accent-cyan);">
+            {% if profile and profile.resume_path %}
+                <span class="badge badge-success">Uploaded</span>
+            {% else %}
+                <span class="badge badge-warning">Missing</span>
+            {% endif %}
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            <a href="{{ url_for('user.resume_analyzer') }}">Upload PDF Resume →</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid-2">
+    <!-- Left Column: Prediction Details & Recommendations -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="bi bi-cpu" style="color: var(--accent-blue);"></i> AI Prediction Details</span>
+                {% if prediction %}
+                    <span class="badge badge-primary">{{ prediction.algorithm_used }}</span>
+                {% endif %}
+            </h3>
+            
+            {% if prediction %}
+                <p style="margin-bottom: 1rem;">
+                    <strong>Target Domain:</strong> <span style="color: var(--accent-blue); font-size: 1.1rem; font-weight: 700;">{{ prediction.predicted_expertise }}</span>
+                </p>
+                <p style="margin-bottom: 0.75rem;">
+                    <strong>Top Identified Strengths:</strong><br>
+                    <span style="color: #34D399; font-size: 0.95rem;">{{ prediction.strengths }}</span>
+                </p>
+                <p style="margin-bottom: 1.25rem;">
+                    <strong>Skill Gap Weaknesses to Improve:</strong><br>
+                    <span style="color: #F87171; font-size: 0.95rem;">{{ prediction.weaknesses }}</span>
+                </p>
+                
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <a href="{{ url_for('report.download_report', report_type='expertise') }}" class="btn btn-sm btn-outline">
+                        <i class="bi bi-file-pdf-fill"></i> Download Expertise Report
+                    </a>
+                    <a href="{{ url_for('report.download_report', report_type='recommendation') }}" class="btn btn-sm btn-outline">
+                        <i class="bi bi-file-earmark-arrow-down-fill"></i> Download Roadmap Report
+                    </a>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <i class="bi bi-brightness-high" style="font-size: 3rem; color: var(--text-muted);"></i>
+                    <p style="color: var(--text-secondary); margin: 1rem 0;">No prediction generated yet. Complete your profile skills to get started.</p>
+                    <a href="{{ url_for('ai.predict') }}" class="btn btn-primary">Run First Prediction</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1rem;"><i class="bi bi-journal-bookmark-fill" style="color: var(--accent-purple);"></i> Top Recommended Actions</h3>
+            {% if recommendations %}
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    {% for rec in recommendations[:4] %}
+                        <div style="padding: 0.85rem; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); border-left: 3px solid var(--accent-purple);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <strong style="font-size: 0.95rem;">{{ rec.title }}</strong>
+                                <span class="badge badge-sm badge-primary">{{ rec.category }}</span>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">{{ rec.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="margin-top: 1rem; text-align: right;">
+                    <a href="{{ url_for('ai.recommendations') }}">View All Recommendations ({{ recommendations|length }}) →</a>
+                </div>
+            {% else %}
+                <p style="color: var(--text-secondary);">Generate an AI prediction to unlock personalized course, job, and project recommendations.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right Column: Profile Summary & Activity Stream -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1rem;"><i class="bi bi-person-circle" style="color: var(--accent-cyan);"></i> Profile Highlights</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem;">
+                <li><strong>Education:</strong> {{ profile.education if profile and profile.education else 'Not provided' }}</li>
+                <li><strong>College:</strong> {{ profile.college if profile and profile.college else 'Not provided' }}</li>
+                <li><strong>Department:</strong> {{ profile.department if profile and profile.department else 'Not provided' }}</li>
+                <li><strong>Experience:</strong> {{ profile.experience_years if profile else 0 }} Years</li>
+                <li><strong>Projects Completed:</strong> {{ profile.projects_count if profile else 0 }}</li>
+                <li><strong>Languages:</strong> {{ profile.programming_languages if profile and profile.programming_languages else 'None listed' }}</li>
+            </ul>
+            <div style="margin-top: 1.2rem;">
+                <a href="{{ url_for('user.profile') }}" class="btn btn-sm btn-secondary" style="width: 100%;">
+                    <i class="bi bi-pencil-square"></i> Edit Profile & Skills
+                </a>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1rem;"><i class="bi bi-clock-history" style="color: var(--accent-emerald);"></i> Recent Activity Log</h3>
+            {% if activities %}
+                <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem;">
+                    {% for act in activities %}
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                            <div>
+                                <strong>{{ act.activity_type }}</strong><br>
+                                <span style="color: var(--text-muted);">{{ act.details }}</span>
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 0.75rem;">
+                                {{ act.timestamp.strftime('%b %d, %H:%M') }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted); font-size: 0.9rem;">No recent activities logged.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
