@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Enterprise System | AI-Powered Operations Platform</title>
+    <meta name="description" content="Next-generation intelligent enterprise management system featuring AI co-pilot, predictive analytics, ERP, CRM, and workflow automation.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i data-lucide="cpu"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>NEXUS<span>.AI</span></h2>
+                    <span class="badge badge-tech">ENTERPRISE OS</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-title">CORE PLATFORM</span>
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-tab="dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Executive Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-tab="ai-copilot">
+                        <i data-lucide="bot"></i>
+                        <span>AI Co-Pilot & Insights</span>
+                        <span class="badge badge-glow">AI</span>
+                    </button>
+                    <button class="nav-item" data-tab="erp">
+                        <i data-lucide="database"></i>
+                        <span>ERP & Operations</span>
+                    </button>
+                    <button class="nav-item" data-tab="crm">
+                        <i data-lucide="users"></i>
+                        <span>CRM & Sales Pipeline</span>
+                    </button>
+                    <button class="nav-item" data-tab="workflows">
+                        <i data-lucide="git-merge"></i>
+                        <span>Workflow Automation</span>
+                    </button>
+                    <button class="nav-item" data-tab="financials">
+                        <i data-lucide="trending-up"></i>
+                        <span>Financial Risk Radar</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-title">SYSTEM CONTROL</span>
+                <nav class="nav-menu">
+                    <button class="nav-item" data-tab="settings">
+                        <i data-lucide="sliders"></i>
+                        <span>System Settings</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- AI Engine Health Card -->
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">
+                    <div class="status-indicator active"></div>
+                    <span>AI Engine Status</span>
+                </div>
+                <div class="sidebar-card-body">
+                    <div class="meter-label">
+                        <span>Predictive Capacity</span>
+                        <span id="ai-capacity-val">98.4%</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill" style="width: 98.4%;"></div>
+                    </div>
+                    <p class="meter-sub">34,820 events processed/sec</p>
+                </div>
+            </div>
+
+            <!-- User Footer -->
+            <div class="sidebar-user">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Executive Avatar" class="user-avatar">
+                <div class="user-info">
+                    <span class="user-name">Eleanor Vance</span>
+                    <span class="user-role">Chief Technology Officer</span>
+                </div>
+                <button class="icon-btn" id="logout-btn" title="System Info">
+                    <i data-lucide="shield-check"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-wrapper">
+            <!-- Top Header Bar -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="sidebar-toggle">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="search-box">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="global-search" placeholder="Search operational modules, metric anomalies, CRM leads, or AI commands (Ctrl+K)...">
+                        <span class="kbd-shortcut">⌘K</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Live Clock -->
+                    <div class="live-clock-badge">
+                        <i data-lucide="clock"></i>
+                        <span id="live-time">17:30:00 UTC</span>
+                    </div>
+
+                    <!-- Environment selector -->
+                    <div class="env-pill">
+                        <span class="dot green"></span>
+                        <span>PROD-CLUSTER-EAST</span>
+                    </div>
+
+                    <!-- Theme Switcher -->
+                    <button class="icon-btn" id="theme-toggle" title="Toggle Light/Dark Theme">
+                        <i data-lucide="sun" class="sun-icon"></i>
+                        <i data-lucide="moon" class="moon-icon"></i>
+                    </button>
+
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown-wrapper">
+                        <button class="icon-btn" id="notif-btn" title="Notifications">
+                            <i data-lucide="bell"></i>
+                            <span class="notif-badge">3</span>
+                        </button>
+                        <div class="dropdown-menu notif-dropdown" id="notif-menu">
+                            <div class="dropdown-header">
+                                <h3>Enterprise Notifications</h3>
+                                <span class="badge badge-accent">3 New</span>
+                            </div>
+                            <div class="notif-list">
+                                <div class="notif-item unread">
+                                    <div class="notif-icon warning"><i data-lucide="alert-triangle"></i></div>
+                                    <div class="notif-content">
+                                        <p class="notif-title">Supply Chain Anomaly Detected</p>
+                                        <span class="notif-time">2 mins ago • Logistics AI</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <div class="notif-icon success"><i data-lucide="check-circle-2"></i></div>
+                                    <div class="notif-content">
+                                        <p class="notif-title">Q3 Financial Model Optimized</p>
+                                        <span class="notif-time">14 mins ago • Forecast Bot</span>
+                                    </div>
+                                </div>
+                                <div class="notif-item unread">
+                                    <div class="notif-icon info"><i data-lucide="zap"></i></div>
+                                    <div class="notif-content">
+                                        <p class="notif-title">New High-Score Lead Qualified</p>
+                                        <span class="notif-time">1 hr ago • CRM Automation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Action Button -->
+                    <button class="btn btn-primary" id="btn-quick-export">
+                        <i data-lucide="download"></i>
+                        <span>Export Report</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Tab Content Views -->
+            <div class="content-container">
+
+                <!-- 1. EXECUTIVE DASHBOARD -->
+                <section class="tab-view active" id="view-dashboard">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">Executive Command Center</h1>
+                            <p class="view-subtitle">Real-time enterprise intelligence, operational telemetry, and AI forecasting.</p>
+                        </div>
+                        <div class="view-actions">
+                            <button class="btn btn-secondary" id="refresh-metrics-btn">
+                                <i data-lucide="refresh-cw"></i>
+                                <span>Sync Telemetry</span>
+                            </button>
+                            <button class="btn btn-gradient" id="trigger-simulation-btn">
+                                <i data-lucide="sparkles"></i>
+                                <span>Run AI Simulation</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metric KPI Cards Grid -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">ARR & Recurring Revenue</span>
+                                <div class="kpi-icon-wrapper cyan"><i data-lucide="dollar-sign"></i></div>
+                            </div>
+                            <div class="kpi-value-row">
+                                <span class="kpi-value" id="kpi-arr">$24.85M</span>
+                                <span class="trend-badge positive"><i data-lucide="trending-up"></i> +14.2%</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span>Target: $26.00M</span>
+                                <span class="sparkline-placeholder" data-color="cyan">▲ YoY Dynamic</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Operational Efficiency Index</span>
+                                <div class="kpi-icon-wrapper purple"><i data-lucide="activity"></i></div>
+                            </div>
+                            <div class="kpi-value-row">
+                                <span class="kpi-value" id="kpi-efficiency">94.8%</span>
+                                <span class="trend-badge positive"><i data-lucide="trending-up"></i> +3.1%</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span>Optimal Threshold: 90%</span>
+                                <span class="sparkline-placeholder">Automated Tuning</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Active Automated Workflows</span>
+                                <div class="kpi-icon-wrapper emerald"><i data-lucide="workflow"></i></div>
+                            </div>
+                            <div class="kpi-value-row">
+                                <span class="kpi-value" id="kpi-workflows">1,482</span>
+                                <span class="trend-badge positive"><i data-lucide="trending-up"></i> +28 today</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span>99.99% Execution Rate</span>
+                                <span class="sparkline-placeholder">Zero Bottlenecks</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">AI Risk & Anomaly Score</span>
+                                <div class="kpi-icon-wrapper rose"><i data-lucide="shield-alert"></i></div>
+                            </div>
+                            <div class="kpi-value-row">
+                                <span class="kpi-value" id="kpi-risk">0.04%</span>
+                                <span class="trend-badge neutral"><i data-lucide="check"></i> Low Risk</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span>Continuous Guardrails Active</span>
+                                <span class="sparkline-placeholder">0 Critical</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="dashboard-grid">
+                        <div class="glass-panel chart-panel large-chart">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Revenue & AI Predictive Growth Forecast</h3>
+                                    <p class="panel-subtitle">Historical actuals vs 6-month machine learning revenue projections</p>
+                                </div>
+                                <div class="segmented-control">
+                                    <button class="segment-btn active" data-period="6m">6M</button>
+                                    <button class="segment-btn" data-period="1y">1Y</button>
+                                    <button class="segment-btn" data-period="all">ALL</button>
+                                </div>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="revenueForecastChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel chart-panel">
+                            <div class="panel-header">
+                                <div>
+                                    <h3 class="panel-title">Enterprise Resource Distribution</h3>
+                                    <p class="panel-subtitle">Live allocation across Cloud infrastructure, R&D, & Operations</p>
+                                </div>
+                            </div>
+                            <div class="chart-body radar-wrapper">
+                                <canvas id="resourceRadarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Anomaly Feed & Action Stream -->
+                    <div class="dashboard-grid bottom-grid">
+                        <div class="glass-panel feed-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="pulse"></i> Live Anomaly Stream</h3>
+                                <span class="badge badge-glow">Real-Time Telemetry</span>
+                            </div>
+                            <div class="feed-list" id="anomaly-feed-list">
+                                <!-- Feed Items inserted dynamically -->
+                            </div>
+                        </div>
+
+                        <div class="glass-panel summary-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i data-lucide="cpu"></i> Autonomous Decision Engine</h3>
+                            </div>
+                            <div class="summary-card-body">
+                                <div class="ai-insight-box">
+                                    <div class="insight-badge"><i data-lucide="sparkles"></i> AI Recommendation</div>
+                                    <p class="insight-text" id="ai-dynamic-insight">
+                                        "Supply Chain node #42 is exhibiting a 12% delay tendency. Recommend re-routing APAC component shipments via Logistics Partner B to preserve 99.4% SLA adherence."
+                                    </p>
+                                    <div class="insight-actions">
+                                        <button class="btn btn-sm btn-primary" id="btn-execute-rec"><i data-lucide="play"></i> Auto-Apply Action</button>
+                                        <button class="btn btn-sm btn-ghost" id="btn-dismiss-rec">Dismiss</button>
+                                    </div>
+                                </div>
+
+                                <div class="quick-stats-list">
+                                    <div class="stat-row">
+                                        <span>Autonomous Actions (24h)</span>
+                                        <strong>412 Executions</strong>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span>Estimated Cost Savings</span>
+                                        <strong class="text-green">$124,500</strong>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span>System Latency</span>
+                                        <strong>12ms</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. AI CO-PILOT & INSIGHTS VIEW -->
+                <section class="tab-view" id="view-ai-copilot">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">Enterprise AI Co-Pilot</h1>
+                            <p class="view-subtitle">Query organizational knowledge, simulate strategic decisions, and synthesize instant reports.</p>
+                        </div>
+                    </div>
+
+                    <div class="copilot-layout">
+                        <!-- Chat Interface -->
+                        <div class="glass-panel copilot-chat-container">
+                            <div class="chat-header">
+                                <div class="chat-bot-info">
+                                    <div class="bot-avatar"><i data-lucide="bot"></i></div>
+                                    <div>
+                                        <h3>Nexus Intelligence System</h3>
+                                        <span class="sub-text"><span class="dot green"></span> Connected to Enterprise Knowledge Graph</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary btn-sm" id="clear-chat-btn">
+                                    <i data-lucide="rotate-ccw"></i> Reset Session
+                                </button>
+                            </div>
+
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message system-msg">
+                                    <div class="msg-avatar"><i data-lucide="cpu"></i></div>
+                                    <div class="msg-body">
+                                        <p>Greetings Eleanor. I am your <strong>Enterprise AI Co-Pilot</strong>. I have indexed your live ERP data, CRM leads, financial ledger, and logistics telemetry. How can I assist your strategic workflow today?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Suggested Questions Pills -->
+                            <div class="suggested-queries">
+                                <span>Suggested:</span>
+                                <button class="query-pill" data-query="Synthesize Q3 revenue drivers and risk factors">Synthesize Q3 Revenue Drivers</button>
+                                <button class="query-pill" data-query="Identify high-risk leads in CRM sales pipeline">Identify CRM Pipeline Risks</button>
+                                <button class="query-pill" data-query="Simulate 15% reduction in cloud infrastructure cost">Simulate Cloud Cost Optimization</button>
+                            </div>
+
+                            <!-- Input Box -->
+                            <div class="chat-input-row">
+                                <input type="text" id="chat-input" placeholder="Ask Nexus anything about operations, financials, CRM, or request a scenario simulation...">
+                                <button class="btn btn-primary" id="chat-send-btn">
+                                    <i data-lucide="send"></i>
+                                    <span>Ask AI</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Side Analytics Panel -->
+                        <div class="copilot-side-panel">
+                            <div class="glass-panel side-box">
+                                <h3><i data-lucide="file-text"></i> Automated Report Generator</h3>
+                                <p class="sub-text">Generate executive summaries powered by LLM analytical reasoning.</p>
+                                <div class="report-options">
+                                    <label class="form-label">Report Focus Area</label>
+                                    <select class="form-control" id="report-type-select">
+                                        <option value="financial">Financial & Revenue Forecast Summary</option>
+                                        <option value="operational">Operational & Logistics Health</option>
+                                        <option value="crm">CRM Sales Conversion & Pipeline Risk</option>
+                                    </select>
+                                    <button class="btn btn-gradient btn-full" id="btn-generate-report">
+                                        <i data-lucide="sparkles"></i> Generate AI Briefing
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel side-box">
+                                <h3><i data-lucide="shield-check"></i> Enterprise Safety & Bias Guard</h3>
+                                <ul class="safety-list">
+                                    <li><i data-lucide="check"></i> Zero External Data Leakage</li>
+                                    <li><i data-lucide="check"></i> Differential Privacy Enforcement</li>
+                                    <li><i data-lucide="check"></i> 100% Audit Logging Enabled</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. ERP & OPERATIONS VIEW -->
+                <section class="tab-view" id="view-erp">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">Enterprise Resource Planning (ERP)</h1>
+                            <p class="view-subtitle">Manage multi-node logistics, inventory assets, and operational records.</p>
+                        </div>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" id="btn-add-erp-item">
+                                <i data-lucide="plus"></i> Add Inventory Asset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ERP Filter & Table Controls -->
+                    <div class="glass-panel table-controls-panel">
+                        <div class="table-search-row">
+                            <div class="search-box">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="erp-search" placeholder="Search SKU, node location, department, or manager...">
+                            </div>
+                            <div class="filter-group">
+                                <select id="erp-dept-filter" class="form-control">
+                                    <option value="ALL">All Departments</option>
+                                    <option value="Logistics">Logistics</option>
+                                    <option value="Infrastructure">Infrastructure</option>
+                                    <option value="Hardware">Hardware</option>
+                                    <option value="Procurement">Procurement</option>
+                                </select>
+                                <select id="erp-status-filter" class="form-control">
+                                    <option value="ALL">All Statuses</option>
+                                    <option value="Optimal">Optimal</option>
+                                    <option value="Warning">Warning</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="table-responsive">
+                            <table class="custom-table" id="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th>Asset ID / SKU</th>
+                                        <th>Resource Name</th>
+                                        <th>Department</th>
+                                        <th>Location Node</th>
+                                        <th>Quantity / Load</th>
+                                        <th>Health Status</th>
+                                        <th>Last Audit</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="erp-table-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination Footer -->
+                        <div class="table-pagination">
+                            <span class="pagination-info">Showing <strong id="erp-showing-count">1-5</strong> of 12 enterprise assets</span>
+                            <div class="pagination-btns">
+                                <button class="btn btn-secondary btn-sm" id="erp-prev-btn" disabled><i data-lucide="chevron-left"></i></button>
+                                <button class="btn btn-secondary btn-sm" id="erp-next-btn"><i data-lucide="chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. CRM & SALES PIPELINE VIEW -->
+                <section class="tab-view" id="view-crm">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">CRM & Sales Intelligence Pipeline</h1>
+                            <p class="view-subtitle">Manage enterprise deals with predictive AI lead win-scoring.</p>
+                        </div>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" id="btn-add-deal">
+                                <i data-lucide="user-plus"></i> New Deal Opportunity
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kanban Board Grid -->
+                    <div class="kanban-board">
+                        <!-- Column 1: Leads -->
+                        <div class="kanban-column" data-stage="lead">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <span class="dot blue"></span>
+                                    <span>New Leads</span>
+                                </div>
+                                <span class="badge badge-subtle" id="count-lead">3</span>
+                            </div>
+                            <div class="kanban-cards" id="cards-lead">
+                                <!-- Cards populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Qualification -->
+                        <div class="kanban-column" data-stage="qualification">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <span class="dot purple"></span>
+                                    <span>AI Qualification</span>
+                                </div>
+                                <span class="badge badge-subtle" id="count-qualification">2</span>
+                            </div>
+                            <div class="kanban-cards" id="cards-qualification">
+                                <!-- Cards -->
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Proposal -->
+                        <div class="kanban-column" data-stage="proposal">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <span class="dot amber"></span>
+                                    <span>Proposal Sent</span>
+                                </div>
+                                <span class="badge badge-subtle" id="count-proposal">2</span>
+                            </div>
+                            <div class="kanban-cards" id="cards-proposal">
+                                <!-- Cards -->
+                            </div>
+                        </div>
+
+                        <!-- Column 4: Negotiation -->
+                        <div class="kanban-column" data-stage="negotiation">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <span class="dot cyan"></span>
+                                    <span>Negotiation</span>
+                                </div>
+                                <span class="badge badge-subtle" id="count-negotiation">2</span>
+                            </div>
+                            <div class="kanban-cards" id="cards-negotiation">
+                                <!-- Cards -->
+                            </div>
+                        </div>
+
+                        <!-- Column 5: Closed Won -->
+                        <div class="kanban-column" data-stage="closed-won">
+                            <div class="column-header">
+                                <div class="column-title">
+                                    <span class="dot green"></span>
+                                    <span>Closed Won</span>
+                                </div>
+                                <span class="badge badge-subtle" id="count-closed-won">2</span>
+                            </div>
+                            <div class="kanban-cards" id="cards-closed-won">
+                                <!-- Cards -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. WORKFLOW AUTOMATION ENGINE -->
+                <section class="tab-view" id="view-workflows">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">Autonomous Workflow Automation</h1>
+                            <p class="view-subtitle">Visual rule builder for automated enterprise actions and trigger handling.</p>
+                        </div>
+                        <div class="view-actions">
+                            <button class="btn btn-primary" id="btn-create-workflow">
+                                <i data-lucide="plus-circle"></i> Create Automation Node
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="workflow-canvas-layout">
+                        <!-- Canvas Node Visualizer -->
+                        <div class="glass-panel workflow-canvas">
+                            <div class="canvas-header">
+                                <h3><i data-lucide="cpu"></i> Active Flow Diagram: "Supply Chain & Risk Safeguard"</h3>
+                                <button class="btn btn-sm btn-secondary" id="btn-test-workflow">
+                                    <i data-lucide="play"></i> Test Trigger Execution
+                                </button>
+                            </div>
+
+                            <div class="workflow-nodes-container" id="workflow-nodes">
+                                <!-- Node 1: Trigger -->
+                                <div class="workflow-node trigger-node">
+                                    <div class="node-badge">TRIGGER</div>
+                                    <div class="node-icon"><i data-lucide="bell-ring"></i></div>
+                                    <div class="node-content">
+                                        <h4>Logistics Telemetry Spike</h4>
+                                        <p>If latency exceeds > 15% threshold for > 5 mins</p>
+                                    </div>
+                                    <div class="node-status active">ACTIVE</div>
+                                </div>
+
+                                <div class="connector-line">
+                                    <i data-lucide="arrow-right"></i>
+                                </div>
+
+                                <!-- Node 2: AI Processor -->
+                                <div class="workflow-node processor-node">
+                                    <div class="node-badge">AI LOGIC</div>
+                                    <div class="node-icon"><i data-lucide="brain"></i></div>
+                                    <div class="node-content">
+                                        <h4>Nexus Predictive Reroute</h4>
+                                        <p>Calculate optimal alternative shipping partner</p>
+                                    </div>
+                                    <div class="node-status active">ACTIVE</div>
+                                </div>
+
+                                <div class="connector-line">
+                                    <i data-lucide="arrow-right"></i>
+                                </div>
+
+                                <!-- Node 3: Action -->
+                                <div class="workflow-node action-node">
+                                    <div class="node-badge">ACTION</div>
+                                    <div class="node-icon"><i data-lucide="send"></i></div>
+                                    <div class="node-content">
+                                        <h4>Dispatch Webhook & Alert</h4>
+                                        <p>Notify Chief Operations Officer on Slack & email</p>
+                                    </div>
+                                    <div class="node-status active">ACTIVE</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Automations List Table -->
+                        <div class="glass-panel automations-list-panel">
+                            <h3>All Active Automation Rules</h3>
+                            <div class="automation-rule-row">
+                                <div class="rule-info">
+                                    <div class="rule-icon green"><i data-lucide="check-square"></i></div>
+                                    <div>
+                                        <strong>Auto-Qualify High Value CRM Leads</strong>
+                                        <p>Lead score > 85 automatically assigns Senior Account Executive</p>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="automation-rule-row">
+                                <div class="rule-info">
+                                    <div class="rule-icon purple"><i data-lucide="refresh-cw"></i></div>
+                                    <div>
+                                        <strong>Daily Cloud Infrastructure Scaling</strong>
+                                        <p>Spin down idle staging environments at 22:00 UTC</p>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="automation-rule-row">
+                                <div class="rule-info">
+                                    <div class="rule-icon rose"><i data-lucide="alert-triangle"></i></div>
+                                    <div>
+                                        <strong>Budget Overrun Safeguard</strong>
+                                        <p>Pause non-essential ad spend if department burn exceeds 110%</p>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. FINANCIAL RISK RADAR VIEW -->
+                <section class="tab-view" id="view-financials">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">Financial Analytics & Risk Radar</h1>
+                            <p class="view-subtitle">Real-time ledger overview, cash flow forecasts, and expense analytics.</p>
+                        </div>
+                    </div>
+
+                    <div class="financials-grid">
+                        <!-- Chart 1: Cash flow -->
+                        <div class="glass-panel chart-panel">
+                            <div class="panel-header">
+                                <h3>Monthly Cash Flow Breakdown ($ Millions)</h3>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="cashflowChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Expense Donut -->
+                        <div class="glass-panel chart-panel">
+                            <div class="panel-header">
+                                <h3>Operational Expenses Distribution</h3>
+                            </div>
+                            <div class="chart-body donut-wrapper">
+                                <canvas id="expenseDonutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. SYSTEM SETTINGS VIEW -->
+                <section class="tab-view" id="view-settings">
+                    <div class="view-header">
+                        <div>
+                            <h1 class="view-title">System Settings & Preferences</h1>
+                            <p class="view-subtitle">Configure enterprise security controls, API integrations, and local storage state.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel settings-container">
+                        <div class="settings-group">
+                            <h3><i data-lucide="sun"></i> Visual Theme Preference</h3>
+                            <div class="setting-item">
+                                <div>
+                                    <strong>Interface Theme Mode</strong>
+                                    <p>Switch between executive dark mode and clean daylight theme.</p>
+                                </div>
+                                <div class="theme-option-btns">
+                                    <button class="btn btn-secondary" id="set-dark-mode">Dark Mode</button>
+                                    <button class="btn btn-secondary" id="set-light-mode">Light Mode</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3><i data-lucide="database"></i> System State & Storage</h3>
+                            <div class="setting-item">
+                                <div>
+                                    <strong>Reset Application State</strong>
+                                    <p>Restores default sample data for ERP assets, CRM deals, and telemetry stats.</p>
+                                </div>
+                                <button class="btn btn-danger" id="reset-state-btn">Reset All State</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3><i data-lucide="package"></i> Package Information</h3>
+                            <div class="setting-item">
+                                <div>
+                                    <strong>Intelligent Enterprise System v2.5 (Pure HTML/CSS/JS)</strong>
+                                    <p>Built with Vanilla HTML5, CSS3 Glassmorphic UI, Chart.js, and Lucide Icons.</p>
+                                </div>
+                                <span class="badge badge-glow">STABLE</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal: Add ERP Asset -->
+    <div class="modal-overlay" id="modal-erp">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Add New Inventory Asset</h3>
+                <button class="modal-close" data-close="modal-erp"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-erp">
+                <div class="form-group">
+                    <label class="form-label">Resource Name</label>
+                    <input type="text" id="erp-name" class="form-control" placeholder="e.g. Edge Server Array Alpha" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Department</label>
+                        <select id="erp-dept" class="form-control">
+                            <option value="Logistics">Logistics</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Hardware">Hardware</option>
+                            <option value="Procurement">Procurement</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location Node</label>
+                        <input type="text" id="erp-location" class="form-control" placeholder="e.g. US-East-1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity / Load</label>
+                        <input type="text" id="erp-qty" class="form-control" placeholder="e.g. 500 Units" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select id="erp-status" class="form-control">
+                            <option value="Optimal">Optimal</option>
+                            <option value="Warning">Warning</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" data-close="modal-erp">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Asset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add CRM Deal -->
+    <div class="modal-overlay" id="modal-crm">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Create New Sales Deal Opportunity</h3>
+                <button class="modal-close" data-close="modal-crm"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-crm">
+                <div class="form-group">
+                    <label class="form-label">Company / Client Name</label>
+                    <input type="text" id="crm-client" class="form-control" placeholder="e.g. Apex Global Corp" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Deal Value ($)</label>
+                        <input type="number" id="crm-value" class="form-control" placeholder="150000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stage</label>
+                        <select id="crm-stage" class="form-control">
+                            <option value="lead">New Leads</option>
+                            <option value="qualification">AI Qualification</option>
+                            <option value="proposal">Proposal Sent</option>
+                            <option value="negotiation">Negotiation</option>
+                            <option value="closed-won">Closed Won</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Lead Score (1-100)</label>
+                    <input type="number" id="crm-score" class="form-control" value="88" min="1" max="100" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" data-close="modal-crm">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Opportunity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
