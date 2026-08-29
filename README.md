@@ -14,7 +14,7 @@ An AI-powered, modern **Intelligent Enterprise System** built using pure **HTML5
 2. **Enterprise AI Co-Pilot**:
    - Conversational AI Assistant interface for indexing ERP, CRM, and Financial telemetry.  
    - Natural language query handling and scenario simulations.  
-   - One-click Executive AI Briefing Generator.
+   - One-click Executive AI Briefing Generator.   
 
 3. **ERP & Operations Manager**:
    - Interactive Data Table with search, department/status filtering, pagination, and asset addition modal.
